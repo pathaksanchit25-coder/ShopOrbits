@@ -16,7 +16,6 @@ const adminSchema = new mongoose.Schema({
     },
     adminID:{
         type:String,
-        required:true,
     }
 });
 

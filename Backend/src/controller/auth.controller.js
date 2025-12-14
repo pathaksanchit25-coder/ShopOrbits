@@ -32,7 +32,7 @@ const adminRegister = async (req, res) => {
         const token = jwt.sign(
             { id: admin._id, username: admin.username, email: admin.email, role: "admin" },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
+            { expiresIn: '2h' }
         );
 
         res.cookie("token", token, {
@@ -83,7 +83,7 @@ const adminLogin = async (req, res) => {
         const token = jwt.sign(
             { id: admin._id, email: admin.email, username: admin.username, role: "admin" },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
+            { expiresIn: '2h' }
         );
 
         res.cookie("token", token, {
@@ -106,6 +106,13 @@ const adminLogin = async (req, res) => {
         });
     }
 };
+
+const adminLogout = (req,res)=>{
+    res.clearCookie('token');
+    res.status(200).json({
+        message:'Admin Logged Out successfully'
+    })
+}
 
 //User Authentication Controller
 
@@ -134,7 +141,7 @@ const userRegister = async (req, res) => {
         const token = jwt.sign(
             { id: user._id, email: user.email, username: user.username, role: "user" },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
+            { expiresIn: '2h' }
         );
 
         // Set cookie securely
@@ -188,7 +195,7 @@ const userLogin = async (req, res) => {
         const token = jwt.sign(
             { id: user._id, email: user.email, username: user.username, role: "user" },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
+            { expiresIn: '2h' }
         );
 
         // Set cookie securely
@@ -212,4 +219,11 @@ const userLogin = async (req, res) => {
         });
     }
 };
-module.exports = { adminRegister, adminLogin, userRegister, userLogin };
+
+const userLogout = (req,res)=>{
+    res.clearCookie('token');
+    res.status(200).json({
+        message:'User Logged out successfully'
+    })
+} 
+module.exports = { adminRegister, adminLogin,adminLogout, userRegister, userLogin,userLogout };
