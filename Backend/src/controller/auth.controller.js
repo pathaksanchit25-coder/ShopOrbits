@@ -8,6 +8,12 @@ const adminRegister = async (req, res) => {
     try {
         const { username, email, password, adminID } = req.body;
 
+        const existingAdmin = await adminModel.findOne({ email });
+
+        if (existingAdmin) {
+            return res.status(409).json({ success: false, message: "Email already registered" });
+        }
+
         if (adminID !== process.env.ADMIN_ID) {
             return res.status(403).json({
                 success: false,
@@ -89,7 +95,8 @@ const adminLogin = async (req, res) => {
         res.status(200).json({
             success: true,
             message: 'Admin logged in successfully',
-            token
+            token,
+            admin
         });
     } catch (error) {
         res.status(500).json({
@@ -105,6 +112,13 @@ const adminLogin = async (req, res) => {
 const userRegister = async (req, res) => {
     try {
         const { username, email, password } = req.body;
+
+        const existingUser = await userModel.findOne({ email });
+
+        if (existingUser) {
+            return res.status(409).json({ success: false, message: "Email already registered" });
+        }
+
 
         // Hash password
         const hashedPassword = await bcrypt.hash(password, 10);
