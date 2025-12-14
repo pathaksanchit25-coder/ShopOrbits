@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const adminModel = require('../models/Admin.model');
-const userModel = require('../models/User.model');
+const userModel = require('../models/User.model');  
 
 // Admin Authentication Controller
 const adminRegister = async (req, res) => {
