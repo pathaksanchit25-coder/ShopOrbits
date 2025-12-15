@@ -25,9 +25,6 @@ const Footer = () => {
             Quick Links
           </h3>
           <div className="flex flex-col space-y-2 text-gray-800 font-medium">
-            <Link to="/" className="hover:text-blue-600 transition-colors">
-              Home
-            </Link>
             <Link to="/about" className="hover:text-blue-600 transition-colors">
               About
             </Link>

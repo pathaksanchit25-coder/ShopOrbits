@@ -12,6 +12,16 @@ const MainBody = () => {
     "Beauty",
   ];
 
+  // Products with category
+  const products = [
+    { id: 1, title: "Smartphone", category: "Electronics", description: "Latest model with cinematic design." },
+    { id: 2, title: "Sneakers", category: "Fashion", description: "Comfortable and stylish everyday wear." },
+    { id: 3, title: "Sofa Set", category: "Home & Living", description: "Premium quality and modern design." },
+    { id: 4, title: "Football", category: "Sports", description: "Durable and perfect for matches." },
+    { id: 5, title: "Novel", category: "Books", description: "Engaging story with premium print." },
+    { id: 6, title: "Action Figure", category: "Toys", description: "High-quality collectible toy." },
+  ];
+
   return (
     <div className="pt-10 min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <div className="max-w-7xl mx-auto px-6">
@@ -34,23 +44,26 @@ const MainBody = () => {
 
         {/* Featured Products Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
+          {products.map((product) => (
             <div
-              key={item}
+              key={product.id}
               className="backdrop-blur-xl bg-white/30 border border-white/40 rounded-2xl shadow-xl p-6 transform transition-all hover:scale-[1.03] hover:shadow-2xl"
             >
               {/* Product Image Placeholder */}
               <div className="h-40 bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg mb-4 flex items-center justify-center text-gray-700 font-semibold ">
-                Product {item}
+                {product.title}
               </div>
 
               {/* Product Info */}
               <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Product Title {item}
+                {product.title}
               </h3>
-              <p className="text-gray-700 mb-4">
-                Short description of product {item}. Premium quality and cinematic design.
-              </p>
+              <p className="text-gray-700 mb-2">{product.description}</p>
+
+              {/* Category */}
+              <span className="inline-block px-3 py-1 text-sm rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium mb-4">
+                {product.category}
+              </span>
 
               {/* CTA */}
               <button className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold shadow-md hover:from-purple-700 hover:to-blue-600 transition-all">

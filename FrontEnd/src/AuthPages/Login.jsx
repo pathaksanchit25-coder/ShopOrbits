@@ -44,7 +44,9 @@ const Login = () => {
         toast.success("User logged in successfully!", {
           position: "top-right",
           autoClose: 3000,
-        });
+        }
+      
+      );
         setTimeout(() => navigate("/user/home"), 1500);
       }
     } catch (err) {
