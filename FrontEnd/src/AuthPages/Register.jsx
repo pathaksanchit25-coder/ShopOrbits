@@ -54,7 +54,9 @@ const Register = () => {
       }
     } catch (error) {
       if (error.response?.status === 409) {
-        toast.error("Email already registered. Please use a different email.", {
+        // Backend now returns specific messages:
+        // "Email already registered as admin" OR "Email already registered as user"
+        toast.error(error.response.data.message, {
           position: "top-right",
           autoClose: 4000,
         });
@@ -151,6 +153,7 @@ const Register = () => {
             <input
               type="text"
               name="securityKey"
+              autoComplete="off"
               value={formData.securityKey}
               onChange={handleChange}
               className="w-full pl-10 pr-4 py-2 rounded-lg bg-white/40 border border-white/50 focus:outline-none focus:ring-2 focus:ring-red-400 text-gray-900 placeholder-gray-500"
