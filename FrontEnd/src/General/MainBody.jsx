@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
 const MainBody = () => {
   const categories = [
     "All",
@@ -12,15 +13,35 @@ const MainBody = () => {
     "Beauty",
   ];
 
-  // Products with category
+  // Products with category + rating
   const products = [
-    { id: 1, title: "Smartphone", category: "Electronics", description: "Latest model with cinematic design." },
-    { id: 2, title: "Sneakers", category: "Fashion", description: "Comfortable and stylish everyday wear." },
-    { id: 3, title: "Sofa Set", category: "Home & Living", description: "Premium quality and modern design." },
-    { id: 4, title: "Football", category: "Sports", description: "Durable and perfect for matches." },
-    { id: 5, title: "Novel", category: "Books", description: "Engaging story with premium print." },
-    { id: 6, title: "Action Figure", category: "Toys", description: "High-quality collectible toy." },
+    { id: 1, title: "Smartphone", category: "Electronics", description: "Latest model with cinematic design.", rating: 4.5 },
+    { id: 2, title: "Sneakers", category: "Fashion", description: "Comfortable and stylish everyday wear.", rating: 4.2 },
+    { id: 3, title: "Sofa Set", category: "Home & Living", description: "Premium quality and modern design.", rating: 4.8 },
+    { id: 4, title: "Football", category: "Sports", description: "Durable and perfect for matches.", rating: 4.0 },
+    { id: 5, title: "Novel", category: "Books", description: "Engaging story with premium print.", rating: 3.9 },
+    { id: 6, title: "Action Figure", category: "Toys", description: "High-quality collectible toy.", rating: 4.7 },
   ];
+
+  // Helper to render stars
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+    return (
+      <div className="flex items-center space-x-1 text-yellow-500 mb-2">
+        {Array(fullStars).fill("★").map((star, i) => (
+          <span key={`full-${i}`}>{star}</span>
+        ))}
+        {halfStar && <span>☆</span>}
+        {Array(emptyStars).fill("☆").map((star, i) => (
+          <span key={`empty-${i}`}>{star}</span>
+        ))}
+        <span className="ml-2 text-gray-700 text-sm">({rating})</span>
+      </div>
+    );
+  };
 
   return (
     <div className="pt-10 min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
@@ -60,6 +81,9 @@ const MainBody = () => {
               </h3>
               <p className="text-gray-700 mb-2">{product.description}</p>
 
+              {/* Ratings */}
+              {renderStars(product.rating)}
+
               {/* Category */}
               <span className="inline-block px-3 py-1 text-sm rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium mb-4">
                 {product.category}
@@ -81,10 +105,11 @@ const MainBody = () => {
           <p className="mt-2 text-gray-700">
             Sign up today and enjoy exclusive offers and updates.
           </p>
-          <Link to='/register'><button className="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 cursor-pointer">
-            Create Account 
-          </button></Link>
-          
+          <Link to='/register'>
+            <button className="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 cursor-pointer">
+              Create Account 
+            </button>
+          </Link>
         </section>
       </div>
     </div>
