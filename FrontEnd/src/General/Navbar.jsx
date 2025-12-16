@@ -14,40 +14,31 @@ const Navbar = () => {
 
   return (
     <nav className="w-full backdrop-blur-xl bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 border-b border-white/30 shadow-lg z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        
         {/* Logo */}
         <Link to="/" className="flex items-center group">
           <img
             src={Logo}
             alt="ShopOrbit Logo"
-            className="h-16 w-auto drop-shadow-xl transform transition-transform duration-300 group-hover:scale-110"
+            className="h-14 w-auto drop-shadow-xl transform transition-transform duration-300 group-hover:scale-110"
           />
         </Link>
 
-        {/* Search Input (Desktop) */}
+        {/* Search Input (Always visible, responsive) */}
         <form
           onSubmit={handleSearch}
-          className="hidden md:flex items-center bg-gray-200/80 backdrop-blur-md border border-gray-400 rounded-full px-4 py-2 shadow-md focus-within:ring-2 focus-within:ring-gradient-to-r focus-within:from-blue-500 focus-within:to-purple-600"
+          className="flex items-center bg-white/40 backdrop-blur-md border border-white/50 rounded-full px-3 py-1.5 shadow-sm focus-within:ring-2 focus-within:ring-blue-400 w-1/2 sm:w-1/3 mx-2"
         >
-          <FiSearch className="text-blue-600 mr-2" />
+          <FiSearch className="text-blue-700 mr-2" size={18} />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search..."
-            className="bg-transparent focus:outline-none text-gray-900 placeholder-gray-700 font-medium w-48"
+            className="bg-transparent focus:outline-none text-gray-800 placeholder-gray-600 font-medium w-full text-sm"
           />
         </form>
-
-        {/* Hamburger (Mobile) */}
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="text-gray-800 focus:outline-none"
-          >
-            {isOpen ? <FiX size={28} /> : <FiMenu size={28} />}
-          </button>
-        </div>
 
         {/* Links (Desktop) */}
         <div className="hidden md:flex space-x-8">
@@ -77,26 +68,21 @@ const Navbar = () => {
             Register
           </Link>
         </div>
+
+        {/* Hamburger (Mobile) */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="text-gray-800 focus:outline-none"
+          >
+            {isOpen ? <FiX size={28} /> : <FiMenu size={28} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden px-6 pb-6 space-y-4 bg-gradient-to-r from-blue-100/70 via-purple-100/70 to-blue-100/70 backdrop-blur-lg border-t border-white/30 shadow-lg rounded-b-xl">
-          {/* Search Input (Mobile) */}
-          <form
-            onSubmit={handleSearch}
-            className="flex items-center bg-gray-200/90 backdrop-blur-md border border-gray-400 rounded-full px-4 py-2 shadow-md focus-within:ring-2 focus-within:ring-blue-500"
-          >
-            <FiSearch className="text-blue-600 mr-2" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search..."
-              className="bg-transparent focus:outline-none text-gray-900 placeholder-gray-700 font-medium w-full"
-            />
-          </form>
-
           {["About", "Services", "Contact"].map((item) => (
             <Link
               key={item}

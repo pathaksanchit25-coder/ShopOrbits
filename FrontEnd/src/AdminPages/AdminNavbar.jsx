@@ -8,7 +8,7 @@ const AdminNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [adminName, setAdminName] = useState("User");
-  const { id } = useParams(); // ✅ keep ID in URL while logged in
+  const { id } = useParams();
   const navigate = useNavigate();
 
   // ✅ Fetch admin info
@@ -22,7 +22,7 @@ const AdminNavbar = () => {
     } catch (err) {
       console.error("Failed to fetch admin info:", err);
       setAdminName("User");
-      navigate("/"); // redirect to home if not authenticated
+      navigate("/");
     }
   };
 
@@ -30,18 +30,14 @@ const AdminNavbar = () => {
   const logOut = async () => {
     try {
       await axios.post("http://localhost:3000/api/auth/admin/logout", {}, { withCredentials: true });
-
       setAdminName("User");
       localStorage.clear();
-
-      // ✅ Force replace (no back to admin/:id)
       window.location.replace("/");
     } catch (err) {
       console.error("Logout failed:", err);
     }
   };
 
-  // ✅ Auth check on mount (handles back button BFCache)
   useEffect(() => {
     getInfo();
   }, [id]);
@@ -55,7 +51,8 @@ const AdminNavbar = () => {
 
   return (
     <nav className="w-full backdrop-blur-xl bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 border-b border-white/30 shadow-lg z-50">
-      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        
         {/* Logo + Admin Panel */}
         <Link to={`/admin/${id}`} className="flex items-center group">
           <img
@@ -68,18 +65,18 @@ const AdminNavbar = () => {
           </span>
         </Link>
 
-        {/* Search Input (Desktop) */}
+        {/* Search Input (Always visible, responsive) */}
         <form
           onSubmit={handleSearch}
-          className="hidden md:flex items-center bg-gray-200/80 backdrop-blur-md border border-gray-400 rounded-full px-3 py-1.5 shadow-md focus-within:ring-2 focus-within:ring-blue-500"
+          className="flex items-center bg-white/40 backdrop-blur-md border border-white/50 rounded-full px-3 py-1.5 shadow-sm focus-within:ring-2 focus-within:ring-blue-400 w-1/2 sm:w-1/3 mx-2"
         >
-          <FiSearch className="text-blue-600 mr-2" size={18} />
+          <FiSearch className="text-blue-700 mr-2" size={18} />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search products, users, orders..."
-            className="bg-transparent focus:outline-none text-gray-900 placeholder-gray-700 font-medium w-56 text-sm"
+            className="bg-transparent focus:outline-none text-gray-800 placeholder-gray-600 font-medium w-full text-sm"
           />
         </form>
 
@@ -87,7 +84,7 @@ const AdminNavbar = () => {
         <div className="hidden md:flex items-center space-x-2">
           <button
             onClick={logOut}
-            className="flex items-center px-3 py-1.5 rounded-lg bg-gradient-to-r from-red-500 to-pink-600 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all"
+            className="flex items-center px-3 py-1.5 rounded-lg bg-white/30 text-gray-900 text-sm font-medium border border-white/40 shadow-sm hover:bg-white/50 transition-all"
           >
             <FiLogOut size={16} className="mr-1" /> Logout
           </button>
@@ -122,28 +119,13 @@ const AdminNavbar = () => {
       {/* Mobile Menu */}
       {isOpen && (
         <div className="md:hidden px-6 pb-6 space-y-4 bg-gradient-to-r from-blue-100/70 via-purple-100/70 to-blue-100/70 backdrop-blur-lg border-t border-white/30 shadow-lg rounded-b-xl">
-          {/* Search Input (Mobile) */}
-          <form
-            onSubmit={handleSearch}
-            className="flex items-center bg-gray-200/90 backdrop-blur-md border border-gray-400 rounded-full px-4 py-2 shadow-md focus-within:ring-2 focus-within:ring-blue-500"
-          >
-            <FiSearch className="text-blue-600 mr-2" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search products, users, orders..."
-              className="bg-transparent focus:outline-none text-gray-900 placeholder-gray-700 font-medium w-full"
-            />
-          </form>
-
           {/* Logout Button (Mobile) */}
           <button
             onClick={() => {
               setIsOpen(false);
               logOut();
             }}
-            className="flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold shadow-md hover:shadow-lg transition-all"
+            className="flex items-center justify-center px-4 py-2 rounded-lg bg-white/30 text-gray-900 font-semibold border border-white/40 shadow-sm hover:bg-white/50 transition-all"
           >
             <FiLogOut className="mr-2" /> Logout
           </button>

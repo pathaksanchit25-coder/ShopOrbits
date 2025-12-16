@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser'); // corrected module name
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/auth.routes');
 const getAdminInfoRoutes = require('./routes/getinfo.routes');
+const getUserInfoRoutes = require('./routes/getinfo.routes');
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -31,5 +32,6 @@ app.use('/api/auth', authRoutes);
 //Info Route
 
 app.use('/api/info', getAdminInfoRoutes);
+app.use('/api/info',getUserInfoRoutes);
 
 module.exports = app;

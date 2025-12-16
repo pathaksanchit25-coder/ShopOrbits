@@ -4,6 +4,7 @@ import Register from '../AuthPages/Register'
 import Login from '../AuthPages/Login'
 import GeneralPage from '../General/GeneralPage'
 import AdminPage from '../AdminPages/AdminPage'
+import UserPage from '../UserPages/UserPage'
 
 const AuthRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AuthRoutes = () => {
             {/* Routes for Admin Page */}
 
             <Route path = '/admin/dashboard/:id' element={<AdminPage/>} />
+            <Route path = '/user/:id' element={<UserPage/>} />
         </Routes>
     </div>
   )

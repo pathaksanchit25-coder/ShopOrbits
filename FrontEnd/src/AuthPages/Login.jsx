@@ -54,7 +54,9 @@ const Login = () => {
         }
 
         );
-        setTimeout(() => navigate("/user/userID"), 1500);
+
+        const userID = response.data.user._id;
+        setTimeout(() => navigate(`/user/${userID}`), 1500);
       }
     } catch (err) {
       if (err.response?.status === 401) {
