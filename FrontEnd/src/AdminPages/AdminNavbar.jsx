@@ -1,30 +1,63 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import {
-  FiMenu,
-  FiX,
-  FiSearch,
-  FiLogOut,
-} from "react-icons/fi";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { FiMenu, FiX, FiSearch, FiLogOut } from "react-icons/fi";
 import Logo from "../assets/images/ShopOrbitLOGO.png";
+import axios from "axios";
 
 const AdminNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const [adminName, setAdminName] = useState("User");
+  const { id } = useParams(); // ✅ keep ID in URL while logged in
+  const navigate = useNavigate();
+
+  // ✅ Fetch admin info
+  const getInfo = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/info/admin/${id}`,
+        { withCredentials: true }
+      );
+      setAdminName(response.data?.username || "User");
+    } catch (err) {
+      console.error("Failed to fetch admin info:", err);
+      setAdminName("User");
+      navigate("/"); // redirect to home if not authenticated
+    }
+  };
+
+  // ✅ Logout handler
+  const logOut = async () => {
+    try {
+      await axios.post("http://localhost:3000/api/auth/admin/logout", {}, { withCredentials: true });
+
+      setAdminName("User");
+      localStorage.clear();
+
+      // ✅ Force replace (no back to admin/:id)
+      window.location.replace("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
+  // ✅ Auth check on mount (handles back button BFCache)
+  useEffect(() => {
+    getInfo();
+  }, [id]);
 
   const handleSearch = (e) => {
     e.preventDefault();
     console.log("Searching products/users/orders:", search);
   };
 
-  const adminName = "Sanchit";
-  const adminRole = "Super Admin";
+  const adminRole = "Admin";
 
   return (
     <nav className="w-full backdrop-blur-xl bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 border-b border-white/30 shadow-lg z-50">
       <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Logo + Admin Panel */}
-        <Link to="/admin" className="flex items-center group">
+        <Link to={`/admin/${id}`} className="flex items-center group">
           <img
             src={Logo}
             alt="ShopOrbit Logo"
@@ -52,27 +85,27 @@ const AdminNavbar = () => {
 
         {/* Logout Button + Profile (Desktop) */}
         <div className="hidden md:flex items-center space-x-2">
-          <Link
-            to="/logout"
+          <button
+            onClick={logOut}
             className="flex items-center px-3 py-1.5 rounded-lg bg-gradient-to-r from-red-500 to-pink-600 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all"
           >
             <FiLogOut size={16} className="mr-1" /> Logout
-          </Link>
+          </button>
 
           {/* Admin Profile */}
-          <div className="flex items-center space-x-2 ml-3">
-            <div className="flex flex-col items-end">
-              <span className="text-gray-900 font-semibold text-sm">
-                {adminName}
-              </span>
-              <span className="text-xs text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 font-medium">
-                {adminRole}
-              </span>
+          {adminName && (
+            <div className="flex items-center space-x-2 ml-3">
+              <div className="flex flex-col items-end">
+                <span className="text-gray-900 font-semibold text-sm">{adminName}</span>
+                <span className="text-xs text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 font-medium">
+                  {adminRole}
+                </span>
+              </div>
+              <div className="h-9 w-9 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-md text-sm">
+                {adminName.charAt(0)}
+              </div>
             </div>
-            <div className="h-9 w-9 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-md text-sm">
-              {adminName.charAt(0)}
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Hamburger (Mobile) */}
@@ -105,26 +138,30 @@ const AdminNavbar = () => {
           </form>
 
           {/* Logout Button (Mobile) */}
-          <Link
-            to="/logout"
+          <button
+            onClick={() => {
+              setIsOpen(false);
+              logOut();
+            }}
             className="flex items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-red-500 to-pink-600 text-white font-semibold shadow-md hover:shadow-lg transition-all"
-            onClick={() => setIsOpen(false)}
           >
             <FiLogOut className="mr-2" /> Logout
-          </Link>
+          </button>
 
           {/* Admin Profile (Mobile) */}
-          <div className="flex items-center space-x-3 pt-4 border-t border-white/30">
-            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
-              {adminName.charAt(0)}
+          {adminName && (
+            <div className="flex items-center space-x-3 pt-4 border-t border-white/30">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-md">
+                {adminName.charAt(0)}
+              </div>
+              <div>
+                <span className="block text-gray-900 font-semibold">{adminName}</span>
+                <span className="block text-sm text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 font-medium">
+                  {adminRole}
+                </span>
+              </div>
             </div>
-            <div>
-              <span className="block text-gray-900 font-semibold">{adminName}</span>
-              <span className="block text-sm text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 font-medium">
-                {adminRole}
-              </span>
-            </div>
-          </div>
+          )}
         </div>
       )}
     </nav>

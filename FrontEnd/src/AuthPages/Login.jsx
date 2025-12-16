@@ -27,27 +27,34 @@ const Login = () => {
           email,
           password,
           adminID: securityKey,
+        }, {
+          withCredentials: true
         });
         console.log("Admin Login:", response.data);
         toast.success("Admin logged in successfully!", {
           position: "top-right",
           autoClose: 3000,
         });
-        setTimeout(() => navigate("/admin/dashboard"), 1500);
+
+        const adminID = response.data.admin._id;
+        console.log(adminID);
+        setTimeout(() => navigate(`/admin/dashboard/${adminID}`), 1500);
       } else {
         // User login
         response = await axios.post("http://localhost:3000/api/auth/user/login", {
           email,
           password,
+        }, {
+          withCredentials: true
         });
         console.log("User Login:", response.data);
         toast.success("User logged in successfully!", {
           position: "top-right",
           autoClose: 3000,
         }
-      
-      );
-        setTimeout(() => navigate("/user/home"), 1500);
+
+        );
+        setTimeout(() => navigate("/user/userID"), 1500);
       }
     } catch (err) {
       if (err.response?.status === 401) {

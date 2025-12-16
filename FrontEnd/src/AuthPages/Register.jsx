@@ -27,6 +27,9 @@ const Register = () => {
             email,
             password,
             adminID: securityKey,
+          },
+          {
+            withCredentials: true
           }
         );
         console.log("Admin:", response.data);
@@ -43,6 +46,9 @@ const Register = () => {
             username,
             email,
             password,
+          },
+          {
+            withCredentials: true
           }
         );
         console.log(response.data);

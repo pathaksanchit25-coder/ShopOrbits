@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const MainBody = () => {
   const categories = [
     "All",
@@ -81,9 +81,10 @@ const MainBody = () => {
           <p className="mt-2 text-gray-700">
             Sign up today and enjoy exclusive offers and updates.
           </p>
-          <button className="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300">
-            Create Account
-          </button>
+          <Link to='/register'><button className="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 cursor-pointer">
+            Create Account 
+          </button></Link>
+          
         </section>
       </div>
     </div>

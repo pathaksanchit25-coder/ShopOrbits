@@ -19,7 +19,7 @@ const AuthRoutes = () => {
 
             {/* Routes for Admin Page */}
 
-            <Route path = '/admin/dashboard' element={<AdminPage/>} />
+            <Route path = '/admin/dashboard/:id' element={<AdminPage/>} />
         </Routes>
     </div>
   )

@@ -7,13 +7,13 @@ const authController = require('../controller/auth.controller')
 
 router.post('/admin/register',authController.adminRegister);
 router.post('/admin/login',authController.adminLogin);
-router.get('/admin/logout',authController.adminLogout);
+router.post('/admin/logout',authController.adminLogout);
 
 //User Authentication Routes
 
 router.post('/user/register',authController.userRegister);
 router.post('/user/login',authController.userLogin);
-router.get('/user/logout',authController.userLogout);
+router.post('/user/logout',authController.userLogout);
 
 
 

@@ -118,6 +118,8 @@ const adminLogout = (req, res) => {
 };
 
 // User Authentication Controller
+
+
 const userRegister = async (req, res) => {
   try {
     const { username, email, password } = req.body;
