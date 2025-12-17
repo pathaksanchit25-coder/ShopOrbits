@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FiMail, FiLock, FiKey } from "react-icons/fi"; // icons
+import { FiMail, FiLock, FiKey } from "react-icons/fi";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,7 +13,7 @@ const Login = () => {
     securityKey: "", // optional for admin
   });
 
-  const [errorMessage, setErrorMessage] = useState(""); // inline error state
+  const [errorMessage, setErrorMessage] = useState("");
 
   const loginAuth = async () => {
     const { email, password, securityKey } = formData;
@@ -22,42 +22,45 @@ const Login = () => {
       let response;
 
       if (securityKey) {
-        // Admin login
-        response = await axios.post("http://localhost:3000/api/auth/admin/login", {
-          email,
-          password,
-          adminID: securityKey,
-        }, {
-          withCredentials: true
-        });
-        console.log("Admin Login:", response.data);
+        // ✅ Admin login
+        response = await axios.post(
+          "http://localhost:3000/api/auth/admin/login",
+          { email, password, securityKey },
+          { withCredentials: true }
+        );
+
         toast.success("Admin logged in successfully!", {
           position: "top-right",
           autoClose: 3000,
         });
 
         const adminID = response.data.admin._id;
-        console.log(adminID);
+        localStorage.setItem("adminID", adminID);
+        localStorage.setItem("token", response.data.token);
+
         setTimeout(() => navigate(`/admin/dashboard/${adminID}`), 1500);
       } else {
-        // User login
-        response = await axios.post("http://localhost:3000/api/auth/user/login", {
-          email,
-          password,
-        }, {
-          withCredentials: true
-        });
-        console.log("User Login:", response.data);
+        // ✅ User login
+        response = await axios.post(
+          "http://localhost:3000/api/auth/user/login",
+          { email, password },
+          { withCredentials: true }
+        );
+
         toast.success("User logged in successfully!", {
           position: "top-right",
           autoClose: 3000,
-        }
-
-        );
+        });
 
         const userID = response.data.user._id;
+        localStorage.setItem("userID", userID);
+        localStorage.setItem("token", response.data.token);
+
         setTimeout(() => navigate(`/user/${userID}`), 1500);
       }
+
+      // ✅ Reset form after login
+      setFormData({ email: "", password: "", securityKey: "" });
     } catch (err) {
       if (err.response?.status === 401) {
         setErrorMessage("Email not registered or password incorrect.");
@@ -78,7 +81,7 @@ const Login = () => {
           autoClose: 4000,
         });
       }
-      console.error(err);
+      console.error("Login error:", err.response?.data || err.message);
     }
   };
 

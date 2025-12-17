@@ -5,6 +5,8 @@ import Login from '../AuthPages/Login'
 import GeneralPage from '../General/GeneralPage'
 import AdminPage from '../AdminPages/AdminPage'
 import UserPage from '../UserPages/UserPage'
+import AddProduct from '../AdminPages/AddProduct'
+import ManageProducts from '../AdminPages/ManageProducts'
 
 const AuthRoutes = () => {
   return (
@@ -22,6 +24,8 @@ const AuthRoutes = () => {
 
             <Route path = '/admin/dashboard/:id' element={<AdminPage/>} />
             <Route path = '/user/:id' element={<UserPage/>} />
+            <Route path='/admin/add-product/:id' element={<AddProduct/>}/>
+            <Route path='/admin/manage-products' element={<ManageProducts/>}/>
         </Routes>
     </div>
   )

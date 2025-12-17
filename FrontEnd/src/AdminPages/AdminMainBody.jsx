@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   FiPlus,
@@ -10,48 +10,59 @@ import {
 } from "react-icons/fi";
 
 const AdminMainBody = () => {
+  const [adminID, setAdminID] = useState("");
+
+  // ✅ Get adminID from localStorage instead of calling login again
+  useEffect(() => {
+    const id = localStorage.getItem("adminID");
+    if (id) {
+      setAdminID(id);
+      console.log("Admin ID:", id);
+    }
+  }, []);
+
   const actions = [
     {
       name: "Add Product",
       description: "Quickly add new products to your store.",
       icon: <FiPlus size={32} />,
-      link: "/admin/add-product",
-      gradient: "from-blue-100 to-blue-200", // lighter tone
+      link: adminID ? `/admin/add-product/${adminID}` : "/admin/add-product",
+      gradient: "from-blue-100 to-blue-200",
     },
     {
       name: "Manage Products",
       description: "View, edit, and remove existing products.",
       icon: <FiBox size={32} />,
       link: "/admin/manage-products",
-      gradient: "from-blue-100 to-blue-200", // lighter tone
+      gradient: "from-blue-100 to-blue-200",
     },
     {
       name: "Manage Users",
       description: "View and manage registered users.",
       icon: <FiUsers size={32} />,
       link: "/admin/users",
-      gradient: "from-blue-100 to-blue-200", // lighter tone
+      gradient: "from-blue-100 to-blue-200",
     },
     {
       name: "View Orders",
       description: "Track and manage customer orders.",
       icon: <FiShoppingCart size={32} />,
       link: "/admin/orders",
-      gradient: "from-blue-100 to-blue-200", // lighter tone
+      gradient: "from-blue-100 to-blue-200",
     },
     {
       name: "Settings",
       description: "Configure admin preferences and system settings.",
       icon: <FiSettings size={32} />,
       link: "/admin/settings",
-      gradient: "from-blue-100 to-blue-200", // lighter tone
+      gradient: "from-blue-100 to-blue-200",
     },
     {
       name: "Analytics Dashboard",
       description: "View sales, revenue, and performance insights.",
       icon: <FiBarChart2 size={32} />,
       link: "/admin/analytics",
-      gradient: "from-blue-100 to-blue-200", // lighter tone
+      gradient: "from-blue-100 to-blue-200",
     },
   ];
 
