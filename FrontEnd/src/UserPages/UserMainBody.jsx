@@ -13,17 +13,16 @@ const UserMainBody = () => {
     "Beauty",
   ];
 
-  // Products with category + rating
+  // Products with category + rating + price in ₹
   const products = [
-    { id: 1, title: "Smartphone", category: "Electronics", description: "Latest model with cinematic design.", rating: 4.5 },
-    { id: 2, title: "Sneakers", category: "Fashion", description: "Comfortable and stylish everyday wear.", rating: 4.2 },
-    { id: 3, title: "Sofa Set", category: "Home & Living", description: "Premium quality and modern design.", rating: 4.8 },
-    { id: 4, title: "Football", category: "Sports", description: "Durable and perfect for matches.", rating: 4.0 },
-    { id: 5, title: "Novel", category: "Books", description: "Engaging story with premium print.", rating: 3.9 },
-    { id: 6, title: "Action Figure", category: "Toys", description: "High-quality collectible toy.", rating: 4.7 },
+    { id: 1, title: "Smartphone", category: "Electronics", description: "Latest model with cinematic design.", rating: 4.5, price: "₹55,000" },
+    { id: 2, title: "Sneakers", category: "Fashion", description: "Comfortable and stylish everyday wear.", rating: 4.2, price: "₹9,500" },
+    { id: 3, title: "Sofa Set", category: "Home & Living", description: "Premium quality and modern design.", rating: 4.8, price: "₹75,000" },
+    { id: 4, title: "Football", category: "Sports", description: "Durable and perfect for matches.", rating: 4.0, price: "₹3,500" },
+    { id: 5, title: "Novel", category: "Books", description: "Engaging story with premium print.", rating: 3.9, price: "₹600" },
+    { id: 6, title: "Action Figure", category: "Toys", description: "High-quality collectible toy.", rating: 4.7, price: "₹4,800" },
   ];
 
-  // Helper to render stars
   const renderStars = (rating) => {
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5;
@@ -71,26 +70,23 @@ const UserMainBody = () => {
               key={product.id}
               className="backdrop-blur-xl bg-white/30 border border-white/40 rounded-2xl shadow-xl p-6 transform transition-all hover:scale-[1.03] hover:shadow-2xl"
             >
-              {/* Product Image Placeholder */}
               <div className="h-40 bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg mb-4 flex items-center justify-center text-gray-700 font-semibold">
                 {product.title}
               </div>
 
-              {/* Product Info */}
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                {product.title}
-              </h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{product.title}</h3>
               <p className="text-gray-700 mb-2">{product.description}</p>
+
+              {/* Price */}
+              <p className="text-lg font-semibold text-green-700 mb-2">{product.price}</p>
 
               {/* Ratings */}
               {renderStars(product.rating)}
 
-              {/* Category */}
               <span className="inline-block px-3 py-1 text-sm rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium mb-4">
                 {product.category}
               </span>
 
-              {/* CTA */}
               <button className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold shadow-md hover:from-purple-700 hover:to-blue-600 transition-all">
                 View Details
               </button>

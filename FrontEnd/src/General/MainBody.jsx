@@ -13,14 +13,14 @@ const MainBody = () => {
     "Beauty",
   ];
 
-  // Products with category + rating
+  // Products with category + rating + price in ₹
   const products = [
-    { id: 1, title: "Smartphone", category: "Electronics", description: "Latest model with cinematic design.", rating: 4.5 },
-    { id: 2, title: "Sneakers", category: "Fashion", description: "Comfortable and stylish everyday wear.", rating: 4.2 },
-    { id: 3, title: "Sofa Set", category: "Home & Living", description: "Premium quality and modern design.", rating: 4.8 },
-    { id: 4, title: "Football", category: "Sports", description: "Durable and perfect for matches.", rating: 4.0 },
-    { id: 5, title: "Novel", category: "Books", description: "Engaging story with premium print.", rating: 3.9 },
-    { id: 6, title: "Action Figure", category: "Toys", description: "High-quality collectible toy.", rating: 4.7 },
+    { id: 1, title: "Smartphone", category: "Electronics", description: "Latest model with cinematic design.", rating: 4.5, price: "₹55,000" },
+    { id: 2, title: "Sneakers", category: "Fashion", description: "Comfortable and stylish everyday wear.", rating: 4.2, price: "₹9,500" },
+    { id: 3, title: "Sofa Set", category: "Home & Living", description: "Premium quality and modern design.", rating: 4.8, price: "₹75,000" },
+    { id: 4, title: "Football", category: "Sports", description: "Durable and perfect for matches.", rating: 4.0, price: "₹3,500" },
+    { id: 5, title: "Novel", category: "Books", description: "Engaging story with premium print.", rating: 3.9, price: "₹600" },
+    { id: 6, title: "Action Figure", category: "Toys", description: "High-quality collectible toy.", rating: 4.7, price: "₹4,800" },
   ];
 
   // Helper to render stars
@@ -46,6 +46,7 @@ const MainBody = () => {
   return (
     <div className="pt-10 min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <div className="max-w-7xl mx-auto px-6">
+        
         {/* Category Filter */}
         <section className="mb-12">
           <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 mb-4">
@@ -76,10 +77,11 @@ const MainBody = () => {
               </div>
 
               {/* Product Info */}
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                {product.title}
-              </h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{product.title}</h3>
               <p className="text-gray-700 mb-2">{product.description}</p>
+
+              {/* Price */}
+              <p className="text-lg font-semibold text-green-700 mb-2">{product.price}</p>
 
               {/* Ratings */}
               {renderStars(product.rating)}

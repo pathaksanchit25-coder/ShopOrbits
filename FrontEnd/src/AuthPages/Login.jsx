@@ -144,7 +144,7 @@ const Login = () => {
           {/* Security Key (Optional for Admin) */}
           <div className="relative">
             <label className="block text-gray-800 font-medium mb-1">
-              Security Key (Optional for Admin)
+              Security Key (For Admin)
             </label>
             <FiKey className="absolute left-3 top-10 text-gray-500" />
             <input
