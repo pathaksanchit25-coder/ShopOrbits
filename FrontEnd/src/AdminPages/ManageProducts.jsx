@@ -1,37 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const ManageProducts = () => {
-  // ✅ Sample product data
-  const [products] = useState([
-    {
-      _id: "1",
-      name: "Smartphone",
-      image: "https://via.placeholder.com/150",
-      description: "Latest model with cinematic design and premium performance.",
-      category: "Electronics",
-      price: 55000,
-      rating: 4.5,
-    },
-    {
-      _id: "2",
-      name: "Sneakers",
-      image: "https://via.placeholder.com/150",
-      description: "Comfortable and stylish sneakers for everyday wear.",
-      category: "Fashion",
-      price: 9500,
-      rating: 4.2,
-    },
-    {
-      _id: "3",
-      name: "Coffee Maker",
-      image: "https://via.placeholder.com/150",
-      description: "Brew fresh coffee with ease and style.",
-      category: "Home & Living",
-      price: 4500,
-      rating: 4.0,
-    },
-  ]);
+  const { id } = useParams();
+
+  // ✅ Products state from API
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const getProductInfo = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/api/admin/product/info",
+        { withCredentials: true }
+      );
+
+      // API returns { success: true, products: [...] }
+      setProducts(response.data.products || []);
+    } catch (err) {
+      setError("Failed to fetch products");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getProductInfo();
+  }, []);
 
   return (
     <div className="pt-10 min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
@@ -40,6 +39,10 @@ const ManageProducts = () => {
         <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 mb-8 text-center">
           Manage Products
         </h2>
+
+        {/* Loading/Error */}
+        {loading && <p className="text-center text-gray-600">Loading products...</p>}
+        {error && <p className="text-center text-red-600">{error}</p>}
 
         {/* Products Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">

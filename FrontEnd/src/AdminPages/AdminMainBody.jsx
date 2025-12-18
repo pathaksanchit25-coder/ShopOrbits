@@ -33,7 +33,7 @@ const AdminMainBody = () => {
       name: "Manage Products",
       description: "View, edit, and remove existing products.",
       icon: <FiBox size={32} />,
-      link: "/admin/manage-products",
+      link: `/admin/manage-products/${adminID}`,
       gradient: "from-blue-100 to-blue-200",
     },
     {

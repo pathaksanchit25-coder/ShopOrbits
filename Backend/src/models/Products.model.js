@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const productModelSchema = new mongoose.Schema({
+const productSchema = new mongoose.Schema({
   name: {
-    type: String,   // ✅ Use constructor, not string
+    type: String,
     required: true,
   },
-  image:{
-    type:String,
-    required:true
+  image: {
+    type: String,
+    required: true,
   },
   description: {
     type: String,
@@ -15,21 +15,22 @@ const productModelSchema = new mongoose.Schema({
   },
   rating: {
     type: Number,
-    default: 0,     // ✅ Optional: give default rating
+    default: 0,
   },
   category: {
     type: String,
     required: true,
   },
-  price:{
-    type:String,
-    required:true
+  price: {
+    type: String,
+    required: true,
+  },
+  ownerId: {   // 👈 Reference to Admin
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Admin",   // 👈 This points to your Admin model
+    required: true,
   }
-},{
-  timestamps:true
-});
+}, { timestamps: true });
 
-// ✅ Correct model creation
-const productModel = mongoose.model('Product', productModelSchema);
-
-module.exports = productModel;
+const Product = mongoose.model("Product", productSchema);
+module.exports = Product;

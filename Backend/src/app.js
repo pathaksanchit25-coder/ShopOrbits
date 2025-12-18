@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth.routes');
 const getAdminInfoRoutes = require('./routes/getinfo.routes');
 const getUserInfoRoutes = require('./routes/getinfo.routes');
 const productRoutes = require('./routes/product.routes');
+const getProductInfoRoutes = require('./routes/getProductInfo.routes')
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:5173',
@@ -37,5 +38,6 @@ app.use('/api/info',getUserInfoRoutes);
 
 //Product Route
 app.use('/api/admin',productRoutes);
+app.use('/api/admin',getProductInfoRoutes);
 
 module.exports = app;

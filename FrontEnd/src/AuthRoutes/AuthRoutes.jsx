@@ -25,7 +25,7 @@ const AuthRoutes = () => {
             <Route path = '/admin/dashboard/:id' element={<AdminPage/>} />
             <Route path = '/user/:id' element={<UserPage/>} />
             <Route path='/admin/add-product/:id' element={<AddProduct/>}/>
-            <Route path='/admin/manage-products' element={<ManageProducts/>}/>
+            <Route path='/admin/manage-products/:id' element={<ManageProducts/>}/>
         </Routes>
     </div>
   )
