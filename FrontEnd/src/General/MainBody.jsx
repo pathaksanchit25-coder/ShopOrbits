@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const MainBody = () => {
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState("All"); // NEW
+
   const categories = [
     "All",
     "Electronics",
@@ -11,17 +17,26 @@ const MainBody = () => {
     "Books",
     "Toys",
     "Beauty",
+    'Others'
   ];
 
-  // Products with category + rating + price in ₹
-  const products = [
-    { id: 1, title: "Smartphone", category: "Electronics", description: "Latest model with cinematic design.", rating: 4.5, price: "₹55,000" },
-    { id: 2, title: "Sneakers", category: "Fashion", description: "Comfortable and stylish everyday wear.", rating: 4.2, price: "₹9,500" },
-    { id: 3, title: "Sofa Set", category: "Home & Living", description: "Premium quality and modern design.", rating: 4.8, price: "₹75,000" },
-    { id: 4, title: "Football", category: "Sports", description: "Durable and perfect for matches.", rating: 4.0, price: "₹3,500" },
-    { id: 5, title: "Novel", category: "Books", description: "Engaging story with premium print.", rating: 3.9, price: "₹600" },
-    { id: 6, title: "Action Figure", category: "Toys", description: "High-quality collectible toy.", rating: 4.7, price: "₹4,800" },
-  ];
+  const getProductInfo = async (pageNum = 1, limit = 6) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/admin/product/allInfo?page=${pageNum}&limit=${limit}`
+      );
+
+      setProducts(response.data.products);
+      setPage(response.data.page);
+      setTotalPages(response.data.totalPages);
+    } catch (err) {
+      console.error("Error fetching products:", err.message);
+    }
+  };
+
+  useEffect(() => {
+    getProductInfo(page);
+  }, [page]);
 
   // Helper to render stars
   const renderStars = (rating) => {
@@ -43,6 +58,12 @@ const MainBody = () => {
     );
   };
 
+  // Filter products by category
+  const filteredProducts =
+    selectedCategory === "All"
+      ? products
+      : products.filter((p) => p.category === selectedCategory);
+
   return (
     <div className="pt-10 min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <div className="max-w-7xl mx-auto px-6">
@@ -56,7 +77,15 @@ const MainBody = () => {
             {categories.map((cat) => (
               <button
                 key={cat}
-                className="px-5 py-2 rounded-full backdrop-blur-xl bg-white/40 border border-white/50 text-gray-800 font-semibold shadow-md hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white transition-all duration-300"
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setPage(1); // reset to first page when category changes
+                }}
+                className={`px-5 py-2 rounded-full backdrop-blur-xl border font-semibold shadow-md transition-all duration-300 ${
+                  selectedCategory === cat
+                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                    : "bg-white/40 border-white/50 text-gray-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white"
+                }`}
               >
                 {cat}
               </button>
@@ -64,39 +93,52 @@ const MainBody = () => {
           </div>
         </section>
 
-        {/* Featured Products Grid */}
+        {/* Products Grid */}
         <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-          {products.map((product) => (
+          {filteredProducts.map((product) => (
             <div
-              key={product.id}
+              key={product._id}
               className="backdrop-blur-xl bg-white/30 border border-white/40 rounded-2xl shadow-xl p-6 transform transition-all hover:scale-[1.03] hover:shadow-2xl"
             >
-              {/* Product Image Placeholder */}
-              <div className="h-40 bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg mb-4 flex items-center justify-center text-gray-700 font-semibold ">
-                {product.title}
+              <div className="h-40 bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg mb-4 flex items-center justify-center text-gray-700 font-semibold">
+                <img src={product.image} alt={product.name} className="h-full object-contain" />
               </div>
 
-              {/* Product Info */}
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{product.title}</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
               <p className="text-gray-700 mb-2">{product.description}</p>
 
-              {/* Price */}
-              <p className="text-lg font-semibold text-green-700 mb-2">{product.price}</p>
+              <p className="text-lg font-semibold text-green-700 mb-2">₹{product.price}</p>
 
-              {/* Ratings */}
               {renderStars(product.rating)}
 
-              {/* Category */}
               <span className="inline-block px-3 py-1 text-sm rounded-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-medium mb-4">
                 {product.category}
               </span>
 
-              {/* CTA */}
               <button className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold shadow-md hover:from-purple-700 hover:to-blue-600 transition-all">
                 View Details
               </button>
             </div>
           ))}
+        </section>
+
+        {/* Pagination Controls */}
+        <section className="flex justify-center gap-4 mb-10">
+          <button
+            disabled={page === 1}
+            onClick={() => setPage(page - 1)}
+            className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="px-4 py-2">Page {page} of {totalPages}</span>
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage(page + 1)}
+            className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400 disabled:opacity-50"
+          >
+            Next
+          </button>
         </section>
 
         {/* Call to Action */}
@@ -107,9 +149,9 @@ const MainBody = () => {
           <p className="mt-2 text-gray-700">
             Sign up today and enjoy exclusive offers and updates.
           </p>
-          <Link to='/register'>
+          <Link to="/register">
             <button className="mt-4 px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold shadow-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 cursor-pointer">
-              Create Account 
+              Create Account
             </button>
           </Link>
         </section>

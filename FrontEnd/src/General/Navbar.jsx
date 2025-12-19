@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // ✅ useNavigate
 import { FiMenu, FiX, FiSearch } from "react-icons/fi";
 import Logo from "../assets/images/ShopOrbitLOGO.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate(); // ✅ navigation hook
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log("Searching for:", search);
+    if (search.trim()) {
+      // Navigate to search results page with query param
+      navigate(`/search?query=${encodeURIComponent(search.trim())}`);
+    }
   };
 
   return (
@@ -25,7 +29,7 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Search Input (Always visible, responsive) */}
+        {/* Search Input */}
         <form
           onSubmit={handleSearch}
           className="flex items-center bg-white/40 backdrop-blur-md border border-white/50 rounded-full px-3 py-1.5 shadow-sm focus-within:ring-2 focus-within:ring-blue-400 w-1/2 sm:w-1/3 mx-2"
