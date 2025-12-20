@@ -7,6 +7,7 @@ import AdminPage from '../AdminPages/AdminPage'
 import UserPage from '../UserPages/UserPage'
 import AddProduct from '../AdminPages/AddProduct'
 import ManageProducts from '../AdminPages/ManageProducts'
+import ProductDescription from '../General/ProductDescription'
 
 const AuthRoutes = () => {
   return (
@@ -19,6 +20,7 @@ const AuthRoutes = () => {
 
             {/* Routes for General Page */}
             <Route path='/' element={<GeneralPage/>}/>
+            <Route path = '/product/:id' element={<ProductDescription/>}/>
 
             {/* Routes for Admin Page */}
 
@@ -26,6 +28,8 @@ const AuthRoutes = () => {
             <Route path = '/user/:id' element={<UserPage/>} />
             <Route path='/admin/add-product/:id' element={<AddProduct/>}/>
             <Route path='/admin/manage-products/:id' element={<ManageProducts/>}/>
+
+            
         </Routes>
     </div>
   )

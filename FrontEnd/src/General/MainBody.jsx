@@ -34,6 +34,8 @@ const MainBody = () => {
     }
   };
 
+
+
   useEffect(() => {
     getProductInfo(page);
   }, [page]);
@@ -67,7 +69,7 @@ const MainBody = () => {
   return (
     <div className="pt-10 min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <div className="max-w-7xl mx-auto px-6">
-        
+
         {/* Category Filter */}
         <section className="mb-12">
           <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 mb-4">
@@ -81,11 +83,10 @@ const MainBody = () => {
                   setSelectedCategory(cat);
                   setPage(1); // reset to first page when category changes
                 }}
-                className={`px-5 py-2 rounded-full backdrop-blur-xl border font-semibold shadow-md transition-all duration-300 ${
-                  selectedCategory === cat
-                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
-                    : "bg-white/40 border-white/50 text-gray-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white"
-                }`}
+                className={`px-5 py-2 rounded-full backdrop-blur-xl border font-semibold shadow-md transition-all duration-300 ${selectedCategory === cat
+                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                  : "bg-white/40 border-white/50 text-gray-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white"
+                  }`}
               >
                 {cat}
               </button>
@@ -115,9 +116,13 @@ const MainBody = () => {
                 {product.category}
               </span>
 
-              <button className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold shadow-md hover:from-purple-700 hover:to-blue-600 transition-all">
-                View Details
-              </button>
+              <Link to={`/product/${product._id}`}>
+                <button
+                  className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold shadow-md hover:from-purple-700 hover:to-blue-600 transition-all"
+                >
+                  View Details
+                </button>
+              </Link>
             </div>
           ))}
         </section>
