@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import { FaHeart } from "react-icons/fa"; // React Icon for heart
+import { FaHeart } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const MainBody = () => {
+  const { id } = useParams();
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [wishlist, setWishlist] = useState([]);
 
   const categories = [
     "All",
@@ -64,18 +66,18 @@ const MainBody = () => {
     );
   };
 
-  // Filter products by category
+  // Show toast only, no color toggle
+  const handleWishlistClick = () => {
+    toast.info("Please login first to add items to wishlist!", {
+      position: "top-center",
+      autoClose: 3000,
+    });
+  };
+
   const filteredProducts =
     selectedCategory === "All"
       ? products
       : products.filter((p) => p.category === selectedCategory);
-
-  // Toggle wishlist (local only)
-  const toggleWishlist = (id) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
-    );
-  };
 
   return (
     <div className="pt-10 min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
@@ -125,17 +127,8 @@ const MainBody = () => {
                 <h3 className="text-xl font-bold text-gray-900">
                   {product.name}
                 </h3>
-                <button
-                  onClick={() => toggleWishlist(product._id)}
-                  className="ml-2"
-                >
-                  <FaHeart
-                    className={`h-5 w-5 cursor-pointer ${
-                      wishlist.includes(product._id)
-                        ? "text-red-500"
-                        : "text-gray-600"
-                    }`}
-                  />
+                <button onClick={handleWishlistClick} className="ml-2">
+                  <FaHeart className="h-5 w-5 cursor-pointer text-gray-600" />
                 </button>
               </div>
 
@@ -194,6 +187,9 @@ const MainBody = () => {
             </button>
           </Link>
         </section>
+
+        {/* Toast container */}
+        <ToastContainer />
       </div>
     </div>
   );

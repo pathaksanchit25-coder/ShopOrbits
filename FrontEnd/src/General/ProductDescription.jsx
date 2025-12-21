@@ -6,6 +6,9 @@ import axios from "axios";
 const ProductDescription = () => {
   const { id } = useParams(); // ✅ get product ID from URL
   const [product, setProduct] = useState(null);
+  const [userRating, setUserRating] = useState(0); // NEW: user-selected rating
+  const [hoverRating, setHoverRating] = useState(0); // NEW: hover effect
+  const [reviewText, setReviewText] = useState(""); // NEW: review input
 
   // Fetch product info from backend
   const productInfo = async () => {
@@ -26,6 +29,15 @@ const ProductDescription = () => {
   if (!product) {
     return <p className="text-center mt-10">Loading product...</p>;
   }
+
+  // Handle form submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted review:", { rating: userRating, review: reviewText });
+    // Later: send to backend API
+    setReviewText("");
+    setUserRating(0);
+  };
 
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300 flex flex-col md:flex-row">
@@ -52,9 +64,7 @@ const ProductDescription = () => {
         </div>
 
         {/* ✅ Price */}
-        <p className="text-green-700 text-2xl font-bold">
-          ₹{product.price}
-        </p>
+        <p className="text-green-700 text-2xl font-bold">₹{product.price}</p>
 
         {/* Description */}
         <p className="text-gray-800 text-lg leading-relaxed">
@@ -74,17 +84,54 @@ const ProductDescription = () => {
           </button>
         </div>
 
-        {/* Review Input */}
-        <div className="mt-8 flex gap-2">
-          <input
-            type="text"
-            placeholder="Add a review"
-            className="flex-1 px-4 py-2 rounded-lg bg-white/40 border border-white/50 text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <button className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-blue-600 text-white font-semibold shadow hover:from-purple-600 hover:to-blue-700 transition-all">
-            Add
-          </button>
-        </div>
+        {/* ⭐ Star Rating + Review Form */}
+        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+          <div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              Give a Rating
+            </h3>
+            <div className="flex gap-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => setUserRating(star)}
+                  onMouseEnter={() => setHoverRating(star)}
+                  onMouseLeave={() => setHoverRating(0)}
+                  className={`cursor-pointer text-2xl ${
+                    (hoverRating || userRating) >= star
+                      ? "text-yellow-500"
+                      : "text-gray-400"
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            {userRating > 0 && (
+              <p className="mt-2 text-gray-700">
+                You rated this product: {userRating} star
+                {userRating > 1 ? "s" : ""}
+              </p>
+            )}
+          </div>
+
+          {/* Review Input */}
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              placeholder="Add a review"
+              className="flex-1 px-4 py-2 rounded-lg bg-white/40 border border-white/50 text-gray-900 placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-500 to-blue-600 text-white font-semibold shadow hover:from-purple-600 hover:to-blue-700 transition-all"
+            >
+              Add
+            </button>
+          </div>
+        </form>
 
         {/* Reviews Section */}
         <div className="mt-6 p-6 rounded-xl bg-white/30 border border-white/50 shadow-inner">
