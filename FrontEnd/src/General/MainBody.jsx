@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { FaHeart } from "react-icons/fa"; // React Icon for heart
 
 const MainBody = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState("All"); // NEW
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [wishlist, setWishlist] = useState([]);
 
   const categories = [
     "All",
@@ -17,7 +19,7 @@ const MainBody = () => {
     "Books",
     "Toys",
     "Beauty",
-    'Others'
+    "Others",
   ];
 
   const getProductInfo = async (pageNum = 1, limit = 6) => {
@@ -34,8 +36,6 @@ const MainBody = () => {
     }
   };
 
-
-
   useEffect(() => {
     getProductInfo(page);
   }, [page]);
@@ -48,13 +48,17 @@ const MainBody = () => {
 
     return (
       <div className="flex items-center space-x-1 text-yellow-500 mb-2">
-        {Array(fullStars).fill("★").map((star, i) => (
-          <span key={`full-${i}`}>{star}</span>
-        ))}
+        {Array(fullStars)
+          .fill("★")
+          .map((star, i) => (
+            <span key={`full-${i}`}>{star}</span>
+          ))}
         {halfStar && <span>☆</span>}
-        {Array(emptyStars).fill("☆").map((star, i) => (
-          <span key={`empty-${i}`}>{star}</span>
-        ))}
+        {Array(emptyStars)
+          .fill("☆")
+          .map((star, i) => (
+            <span key={`empty-${i}`}>{star}</span>
+          ))}
         <span className="ml-2 text-gray-700 text-sm">({rating})</span>
       </div>
     );
@@ -66,10 +70,16 @@ const MainBody = () => {
       ? products
       : products.filter((p) => p.category === selectedCategory);
 
+  // Toggle wishlist (local only)
+  const toggleWishlist = (id) => {
+    setWishlist((prev) =>
+      prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
+    );
+  };
+
   return (
     <div className="pt-10 min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-300">
       <div className="max-w-7xl mx-auto px-6">
-
         {/* Category Filter */}
         <section className="mb-12">
           <h2 className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-600 mb-4">
@@ -83,10 +93,11 @@ const MainBody = () => {
                   setSelectedCategory(cat);
                   setPage(1); // reset to first page when category changes
                 }}
-                className={`px-5 py-2 rounded-full backdrop-blur-xl border font-semibold shadow-md transition-all duration-300 ${selectedCategory === cat
-                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
-                  : "bg-white/40 border-white/50 text-gray-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white"
-                  }`}
+                className={`px-5 py-2 rounded-full backdrop-blur-xl border font-semibold shadow-md transition-all duration-300 ${
+                  selectedCategory === cat
+                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                    : "bg-white/40 border-white/50 text-gray-800 hover:bg-gradient-to-r hover:from-blue-500 hover:to-purple-600 hover:text-white"
+                }`}
               >
                 {cat}
               </button>
@@ -101,14 +112,37 @@ const MainBody = () => {
               key={product._id}
               className="backdrop-blur-xl bg-white/30 border border-white/40 rounded-2xl shadow-xl p-6 transform transition-all hover:scale-[1.03] hover:shadow-2xl"
             >
-              <div className="h-40 bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg mb-4 flex items-center justify-center text-gray-700 font-semibold">
-                <img src={product.image} alt={product.name} className="h-full object-contain" />
+              <div className="h-40 bg-gradient-to-r from-blue-200 to-purple-200 rounded-lg mb-4 flex items-center justify-center">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="h-full object-contain"
+                />
               </div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
-              <p className="text-gray-700 mb-2">{product.description}</p>
+              {/* Title + Heart side by side */}
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-xl font-bold text-gray-900">
+                  {product.name}
+                </h3>
+                <button
+                  onClick={() => toggleWishlist(product._id)}
+                  className="ml-2"
+                >
+                  <FaHeart
+                    className={`h-5 w-5 cursor-pointer ${
+                      wishlist.includes(product._id)
+                        ? "text-red-500"
+                        : "text-gray-600"
+                    }`}
+                  />
+                </button>
+              </div>
 
-              <p className="text-lg font-semibold text-green-700 mb-2">₹{product.price}</p>
+              <p className="text-gray-700 mb-2">{product.description}</p>
+              <p className="text-lg font-semibold text-green-700 mb-2">
+                ₹{product.price}
+              </p>
 
               {renderStars(product.rating)}
 
@@ -117,9 +151,7 @@ const MainBody = () => {
               </span>
 
               <Link to={`/product/${product._id}`}>
-                <button
-                  className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold shadow-md hover:from-purple-700 hover:to-blue-600 transition-all"
-                >
+                <button className="w-full py-2 rounded-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white font-semibold shadow-md hover:from-purple-700 hover:to-blue-600 transition-all">
                   View Details
                 </button>
               </Link>
@@ -136,7 +168,9 @@ const MainBody = () => {
           >
             Previous
           </button>
-          <span className="px-4 py-2">Page {page} of {totalPages}</span>
+          <span className="px-4 py-2">
+            Page {page} of {totalPages}
+          </span>
           <button
             disabled={page === totalPages}
             onClick={() => setPage(page + 1)}
