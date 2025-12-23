@@ -39,7 +39,9 @@ const removeFromWishlist = async (req, res) => {
 // Fetch all products in wishlist
 const getWishlist = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userId = req.user.
+        
+        id;
 
         const wishlist = await Wishlist.findOne({ userId }).populate("products");
 
