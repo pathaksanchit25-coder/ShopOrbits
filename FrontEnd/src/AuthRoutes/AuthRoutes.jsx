@@ -8,6 +8,7 @@ import UserPage from '../UserPages/UserPage'
 import AddProduct from '../AdminPages/AddProduct'
 import ManageProducts from '../AdminPages/ManageProducts'
 import ProductDescription from '../General/ProductDescription'
+import WishListeItems from '../UserPages/WishListItems'
 
 const AuthRoutes = () => {
   return (
@@ -25,9 +26,12 @@ const AuthRoutes = () => {
             {/* Routes for Admin Page */}
 
             <Route path = '/admin/dashboard/:id' element={<AdminPage/>} />
-            <Route path = '/user/:id' element={<UserPage/>} />
             <Route path='/admin/add-product/:id' element={<AddProduct/>}/>
             <Route path='/admin/manage-products/:id' element={<ManageProducts/>}/>
+
+            {/* Routes for User */}
+            <Route path = '/user/:id' element={<UserPage/>} />
+            <Route path = '/user/wishlist' element= {<WishListeItems/>}/>
 
             
         </Routes>

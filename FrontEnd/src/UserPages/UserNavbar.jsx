@@ -81,7 +81,7 @@ const UserNavbar = () => {
           <Link to="/orders" className="flex items-center px-4 py-2 rounded-lg bg-white/30 text-gray-900 text-sm font-medium border border-white/40 shadow-sm hover:bg-white/50 transition-all">
             📦 My Orders
           </Link>
-          <Link to="/wishlist" className="flex items-center px-4 py-2 rounded-lg bg-white/30 text-gray-900 text-sm font-medium border border-white/40 shadow-sm hover:bg-white/50 transition-all">
+          <Link to="/user/wishlist" className="flex items-center px-4 py-2 rounded-lg bg-white/30 text-gray-900 text-sm font-medium border border-white/40 shadow-sm hover:bg-white/50 transition-all">
             <FiHeart className="mr-2" /> Wishlist
           </Link>
           <Link to="/cart" className="flex items-center px-4 py-2 rounded-lg bg-white/30 text-gray-900 text-sm font-medium border border-white/40 shadow-sm hover:bg-white/50 transition-all">

@@ -10,10 +10,11 @@ const productRoutes = require('./routes/product.routes');
 const getProductInfoRoutes = require('./routes/getProductInfo.routes');
 const getAllProductInfoRoutes = require('./routes/getAllProductInfo.routes');
 const productDescriptionRoutes = require('./routes/productDescriptionPage.routes');
+const wishListProductRoutes = require('./routes/wishListProduct.routes');
 const cors = require('cors');
 app.use(cors({
     origin: 'http://localhost:5173',
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
     credentials: true
 
 }));
@@ -41,5 +42,6 @@ app.use('/api/admin', productRoutes);
 app.use('/api/admin', getProductInfoRoutes);
 app.use('/api/admin', getAllProductInfoRoutes);
 app.use('/api/admin', productDescriptionRoutes);
+app.use('/api/user', wishListProductRoutes);
 
 module.exports = app;
